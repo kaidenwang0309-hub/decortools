@@ -52,7 +52,7 @@ def call_unless(condition, default_response=None, default_error=None):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if condition is True:
+            if condition:
                 if default_response and default_error is not None:
                     raise ValueError
                 elif default_response is not None:
