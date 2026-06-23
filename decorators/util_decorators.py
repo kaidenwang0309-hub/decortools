@@ -4,9 +4,7 @@ def combine(dec1, dec2):
   def decorator(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-      @dec1
-      @dec2
-      func(*args, **kwargs)
+      dec1(dec2(func(*args, **kwargs)))
     return wrapper
   return decorator
 
