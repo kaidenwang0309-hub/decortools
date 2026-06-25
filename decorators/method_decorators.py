@@ -49,19 +49,19 @@ def call_if(condition: bool, default_error=None, default_response=None):
   return decorator
 
 def call_unless(condition, default_response=None, default_error=None):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            if condition:
-                if default_response and default_error is not None:
-                    raise ValueError
-                elif default_response is not None:
-                    default_response()
-                elif default_error is not None:
-                    raise default_error
-                else:
-                    return
-            else:
-                func(self, *args, **kwargs)
-        return wrapper
-    return decorator
+  def decorator(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+      if condition:
+        if default_response and default_error is not None:
+          raise ValueError
+        elif default_response is not None:
+          default_response()
+        elif default_error is not None:
+          raise default_error
+        else:
+          return
+        else:
+          func(self, *args, **kwargs)
+    return wrapper
+  return decorator
