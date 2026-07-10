@@ -1,6 +1,9 @@
 '''Implementation code for decorators that decorate functions is written here.'''
 
 from functools import wraps
+import control_flow
+import errors
+import threading
 
 def repeat(times: int):
   def decorator(func):
@@ -74,3 +77,23 @@ def call_unless(condition, default_error=None, default_response=None):
           func(*args, **kwargs)
     return wrapper
   return decorator
+
+def try_for(seconds):
+  def decorator(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+      func_thread = threading.Thread(target=func, args=*args, kwargs=**kwargs)
+      time_thread = threading.Thread(target=control_flow.wait, args=(seconds,))
+      
+      func_thread.start()
+      time_thread.start()
+
+      while True:
+        if func_thread.is_alive() and time_thread.is_alive():
+          continue
+        elif not func_thread.is_alive():
+          del time_thread
+          return
+        
+        del func_thread
+        raise errors.TimeOutError
