@@ -1,3 +1,5 @@
+'''Control flow functions for time (and conditionally) restrained decorators.'''
+
 import time
 
 def wait(seconds):
